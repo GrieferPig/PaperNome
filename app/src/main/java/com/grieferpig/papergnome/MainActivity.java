@@ -26,13 +26,15 @@ import com.github.mmin18.widget.RealtimeBlurView;
 import com.google.android.material.snackbar.Snackbar;
 import com.tandong.bottomview.BottomView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MainActivity extends Activity implements View.OnTouchListener {
 
     RealtimeBlurView blur_layer;
     BottomView bv, bv1, bv2;
     TextView bpm_now, tv_bar, tv_noteTime, about;
     CardView bpmsetCard;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch vib_beat;
     SeekBar volume_seek;
     ImageView dragger;
@@ -86,13 +88,21 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         vib_beat = findViewById(R.id.vib_beat);
         vib_beat.setChecked(u.VIBRATE());
         vib_beat.setOnCheckedChangeListener((buttonView, isChecked) -> u.setVIB(isChecked));
+        ArrayList<String> _hidden_texts = new ArrayList<String>();
+        _hidden_texts.addAll(Arrays.asList("You found a nothing!",
+                "Open-Source on Github!",
+                "Very Buggy!",
+                "Seriously who would see this",
+                "LMFAO",
+                "never gonna give you up",
+                "Friendship is Magic!",
+                "bruh", "Sub Me!", "https://grieferpig.xyz!"));
         findViewById(R.id.ver).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 verTouchCounter = verTouchCounter + 1;
                 if(verTouchCounter == 8){
-                    Toast t = new Toast(MainActivity.this);
-                    t.makeText(MainActivity.this, "You found a nothing!", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.mainLayer), _hidden_texts.get((int)Math.random()*10), Snackbar.LENGTH_SHORT).show();
                     verTouchCounter=0;
                 }
                 return false;
