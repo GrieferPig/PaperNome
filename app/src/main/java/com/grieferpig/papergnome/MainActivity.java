@@ -92,17 +92,18 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         _hidden_texts.addAll(Arrays.asList("You found a nothing!",
                 "Open-Source on Github!",
                 "Very Buggy!",
-                "Seriously who would see this",
+                "Seriously who would like see this",
                 "LMFAO",
                 "never gonna give you up",
                 "Friendship is Magic!",
-                "bruh", "Sub Me!", "https://grieferpig.xyz!"));
+                "bruh", "Sub Me On YT/Bilibili!", "https://grieferpig.xyz!"));
         findViewById(R.id.ver).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 verTouchCounter = verTouchCounter + 1;
                 if(verTouchCounter == 8){
-                    Snackbar.make(findViewById(R.id.mainLayer), _hidden_texts.get((int)Math.random()*10), Snackbar.LENGTH_SHORT).show();
+                    Log.d("lol",(int)(Math.random()*10)+"");
+                    Snackbar.make(findViewById(R.id.mainLayer), _hidden_texts.get((int)(Math.random()*10)), Snackbar.LENGTH_SHORT).show();
                     verTouchCounter=0;
                 }
                 return false;
@@ -133,7 +134,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             //u.clear();
             return true;
         });
-        about.setText("PaperNome "+BuildConfig.VERSION_NAME+" ,Version "+BuildConfig.VERSION_CODE+", "+BuildConfig.BUILD_TYPE+"\rBy GrieferPig");
+        about.setText("节拍器 "+BuildConfig.VERSION_NAME+" ,Version "+BuildConfig.VERSION_CODE+", "+BuildConfig.BUILD_TYPE+"\rBy GrieferPig");
         about.setTextSize((float) 8.0);
         sp1.load(this, R.raw.hit_high,1);
         sp2.load(this,R.raw.hit_low,2);
