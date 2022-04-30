@@ -38,6 +38,7 @@ public class util {
             setLN(4);
             setV(1);
             setVIB(true);
+            setBEEP("hit");
         }
     }
 
@@ -82,6 +83,10 @@ public class util {
 
     public void setVIB(boolean _t){
         _s.w(confItem.VIBRATE.name(), _t);
+    }
+
+    public void setBEEP(String _t){
+        _s.w(confItem.BEEP_SOUND.name(), _t);
     }
 
     public Display getDisplay(Activity activity) {

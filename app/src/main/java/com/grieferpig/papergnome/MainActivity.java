@@ -5,6 +5,7 @@ import androidx.cardview.widget.CardView;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -67,7 +68,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Vibrator vibrator = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
+        Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         u = new util(vibrator, this);
         u.initConf();
         Display _display = u.getDisplay(this);
@@ -136,6 +137,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         });
         about.setText("节拍器 "+BuildConfig.VERSION_NAME+" ,Version "+BuildConfig.VERSION_CODE+", "+BuildConfig.BUILD_TYPE+"\rBy GrieferPig");
         about.setTextSize((float) 8.0);
+        switch(new StorageManager()){
+
+        }
         sp1.load(this, R.raw.hit_high,1);
         sp2.load(this,R.raw.hit_low,2);
         blur_layer = findViewById(R.id.blur_layer);
