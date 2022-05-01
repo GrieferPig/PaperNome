@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/evanl/StudioProjects/PaperNome/app/src/main/res/layout/activity_main.xml" value="0.67" />
+        <entry key="..\:/Users/evanl/StudioProjects/PaperNome/app/src/main/res/layout/layout.xml" value="1.0" />
+        <entry key="..\:/Users/evanl/StudioProjects/PaperNome/app/src/main/res/layout/popup_count.xml" value="0.67" />
+        <entry key="..\:/Users/evanl/StudioProjects/PaperNome/app/src/main/res/layout/popup_layout.xml" value="0.75" />
         <entry key="..\:/Users/grieferpig/AndroidStudioProjects/PaperGnome/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/grieferpig/AndroidStudioProjects/PaperGnome/app/src/main/res/layout/layout.xml" value="0.5" />
       </map>

@@ -1,5 +1,7 @@
 package com.grieferpig.papergnome;
 
+import static android.view.MotionEvent.ACTION_UP;
+
 import androidx.cardview.widget.CardView;
 
 import android.animation.ValueAnimator;
@@ -17,6 +19,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -34,19 +37,19 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     RealtimeBlurView blur_layer;
     BottomView bv, bv1, bv2;
-    TextView bpm_now, tv_bar, tv_noteTime, about;
+    TextView bpm_now, tv_noteTime, about;
     CardView bpmsetCard;
     Switch vib_beat;
     SeekBar volume_seek;
     ImageView dragger;
+    Button switch_sound;
 
-    int lastY=-1000;
+    int lastY = -1000;
 
     boolean settingShown = false;
 
     boolean stop = false;
     int bpm;
-    int bar;
     int noteTime;
 
     CardView _settings;
@@ -56,26 +59,27 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     int verTouchCounter = 0;
 
-    SoundPool sp1 =new SoundPool(3, AudioManager.STREAM_MUSIC,1);
-    SoundPool sp2 = new SoundPool(3,AudioManager.STREAM_MUSIC,1);
+    SoundPool sp1 = new SoundPool(3, AudioManager.STREAM_MUSIC, 1);
+    SoundPool sp2 = new SoundPool(3, AudioManager.STREAM_MUSIC, 1);
     util u;
 
-    public void setFocus(boolean bool){
+    public void setFocus(boolean bool) {
         findViewById(R.id.bpmsetCard).setEnabled(bool);
         findViewById(R.id.jiepaisetcard).setEnabled(bool);
         settingShown = !bool;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         u = new util(vibrator, this);
+        u.clear();
         u.initConf();
         Display _display = u.getDisplay(this);
         sheight = _display.getHeight();
         swidth = _display.getWidth();
         bpm = u.LAST_SPEED();
-        bar = u.LAST_BAR();
         noteTime = u.LAST_NOTETIME();
         setContentView(R.layout.activity_main);
         ViewGroup.LayoutParams constParams = findViewById(R.id.settingconstraint).getLayoutParams();
@@ -101,23 +105,24 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         findViewById(R.id.ver).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                verTouchCounter = verTouchCounter + 1;
-                if(verTouchCounter == 8){
-                    Log.d("lol",(int)(Math.random()*10)+"");
-                    Snackbar.make(findViewById(R.id.mainLayer), _hidden_texts.get((int)(Math.random()*10)), Snackbar.LENGTH_SHORT).show();
-                    verTouchCounter=0;
+                if (event.getAction() == ACTION_UP) {
+                    verTouchCounter = verTouchCounter + 1;
+                    if (verTouchCounter == 8) {
+                        Snackbar.make(findViewById(R.id.mainLayer), _hidden_texts.get((int) (Math.random() * 10)), Snackbar.LENGTH_SHORT).show();
+                        verTouchCounter = 0;
+                    }
                 }
                 return false;
             }
         });
         volume_seek = findViewById(R.id.volume_seek);
         volume_seek.setMax(100);
-        volume_seek.setProgress((int)(u.VOLUME()*100), true);
+        volume_seek.setProgress((int) (u.VOLUME() * 100), true);
         volume_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float _p = (float) progress;
-                u.setV(_p/100);
+                u.setV(_p / 100);
             }
 
             @Override
@@ -135,20 +140,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             //u.clear();
             return true;
         });
-        about.setText("节拍器 "+BuildConfig.VERSION_NAME+" ,Version "+BuildConfig.VERSION_CODE+", "+BuildConfig.BUILD_TYPE+"\rBy GrieferPig");
+        about.setText("节拍器 " + BuildConfig.VERSION_NAME + " ,Version " + BuildConfig.VERSION_CODE + ", " + BuildConfig.BUILD_TYPE + "\rBy GrieferPig");
         about.setTextSize((float) 8.0);
-        switch(new StorageManager()){
-
-        }
-        sp1.load(this, R.raw.hit_high,1);
-        sp2.load(this,R.raw.hit_low,2);
+        loadSound();
         blur_layer = findViewById(R.id.blur_layer);
         bpm_now = findViewById(R.id.tv_bpm);
-        tv_bar = findViewById(R.id.tv_bar);
         tv_noteTime = findViewById(R.id.tv_noteTime);
-        bpm_now.setText(bpm+"");
-        tv_bar.setText(bar+"");
-        tv_noteTime.setText(noteTime+"");
+        bpm_now.setText(bpm + "");
+        switch_sound = findViewById(R.id.switch_sound);
+        switch_sound.setText("切换节拍声音: "+config.sounds[u.BEEP()][1]);
+        tv_noteTime.setText(noteTime + "");
         bpmsetCard = findViewById(R.id.bpmsetCard);
         bpmsetCard.setOnLongClickListener(v -> {
             bounceViewEffect(v);
@@ -169,23 +170,82 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             return true;
         });
         bv = new BottomView(this, R.style.BottomViewTheme_Transparent, R.layout.popup_layout);
-        bv.onItemClick(R.id.popup_bpm_add, v -> {minusBpm(false,v);bounceViewEffect(v);});
-        bv.onItemLongClick(R.id.popup_bpm_add, v -> {minusBpm(true,v);bounceViewEffect(v); return true;});
-        bv.onItemClick(R.id.popup_bpm_minus, v -> {addBpm(false,v);bounceViewEffect(v);});
-        bv.onItemLongClick(R.id.popup_bpm_minus, v -> {addBpm(true,v);bounceViewEffect(v); return true;});
+        bv.onItemClick(R.id.popup_bpm_add, v -> {
+            minusBpm(false, v);
+            bounceViewEffect(v);
+        });
+        bv.onItemLongClick(R.id.popup_bpm_add, v -> {
+            minusBpm(true, v);
+            bounceViewEffect(v);
+            return true;
+        });
+        bv.onItemClick(R.id.popup_bpm_minus, v -> {
+            addBpm(false, v);
+            bounceViewEffect(v);
+        });
+        bv.onItemLongClick(R.id.popup_bpm_minus, v -> {
+            addBpm(true, v);
+            bounceViewEffect(v);
+            return true;
+        });
 
         bv1 = new BottomView(this, R.style.BottomViewTheme_Transparent, R.layout.layout);
-        bv1.onItemClick(R.id.popup_bar_add, v -> {addBar(v);bounceViewEffect(v);});
-        bv1.onItemClick(R.id.popup_bar_minus, v -> {minusBar(v);bounceViewEffect(v);});
-        bv1.onItemClick(R.id.popup_noteTime_add, v -> {addNoteTime(v);bounceViewEffect(v);});
-        bv1.onItemClick(R.id.popup_noteTime_minus, v -> {minusNoteTime(v);bounceViewEffect(v);});
+        bv1.onItemClick(R.id.popup_noteTime_add, v -> {
+            addNoteTime(v);
+            bounceViewEffect(v);
+        });
+        bv1.onItemClick(R.id.popup_noteTime_minus, v -> {
+            minusNoteTime(v);
+            bounceViewEffect(v);
+        });
 
         bv2 = new BottomView(this, R.style.BottomViewTheme_Transparent, R.layout.popup_count);
         updateBpmSpeedView();
-        updateBarSpeedView();
         updateNoteTimeSpeedView();
     }
 
+    /**
+     * sound handling
+     */
+
+    private void switchSound() {
+        switch (u.BEEP()) {
+            case config.SOUND_HIT:
+                u.setBEEP(config.SOUND_SINE);
+                break;
+            case config.SOUND_SINE:
+                u.setBEEP(config.SOUND_SNAP);
+                break;
+            case config.SOUND_SNAP:
+                u.setBEEP(config.SOUND_HIT);
+                break;
+        }
+    }
+
+    private void loadSound() {
+        sp1 = new SoundPool(3, AudioManager.STREAM_MUSIC, 1);
+        sp2 = new SoundPool(3, AudioManager.STREAM_MUSIC, 1);
+        switch (u.BEEP()) {
+            case config.SOUND_HIT:
+                sp1.load(this, R.raw.hit_high, 1);
+                sp2.load(this, R.raw.hit_low, 2);
+                break;
+            case config.SOUND_SINE:
+                sp1.load(this, R.raw.sine_high, 1);
+                sp2.load(this, R.raw.sine_low, 2);
+                break;
+            case config.SOUND_SNAP:
+                sp1.load(this, R.raw.snap_high, 1);
+                sp2.load(this, R.raw.snap_low, 2);
+                break;
+        }
+    }
+
+    /**
+     * ui handling
+     */
+
+    // handling swipe-up pop menu
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
@@ -209,32 +269,32 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                if(!settingShown){
-                // 滑动
-                if(lastY == -1000){
-                    lastY = (int) distanceY;
-                }else {
-                    if (lastY < distanceY) {
-                        if ((distanceY - lastY) > 80) {
-                            new Handler().postDelayed(() -> {
-                                ValueAnimator anim1 = ValueAnimator.ofFloat(sheight, 0f);
-                                anim1.setDuration(200);
-                                anim1.addUpdateListener(animation -> {
-                                    float currentValue = (float) animation.getAnimatedValue();
-                                    setTopMargin(_settings, (int) currentValue);
-                                });
-                                anim1.start();
-                            }, 0);
-                            setFocus(false);
+                if (!settingShown) {
+                    // 滑动
+                    if (lastY == -1000) {
+                        lastY = (int) distanceY;
+                    } else {
+                        if (lastY < distanceY) {
+                            if ((distanceY - lastY) > 80) {
+                                new Handler().postDelayed(() -> {
+                                    ValueAnimator anim1 = ValueAnimator.ofFloat(sheight, 0f);
+                                    anim1.setDuration(200);
+                                    anim1.addUpdateListener(animation -> {
+                                        float currentValue = (float) animation.getAnimatedValue();
+                                        setTopMargin(_settings, (int) currentValue);
+                                    });
+                                    anim1.start();
+                                }, 0);
+                                setFocus(false);
+                                lastY = -1000;
+                            }
+                        } else {
                             lastY = -1000;
                         }
-                    } else {
-                        lastY = -1000;
                     }
+                    Log.d("TAG", "onScroll: " + distanceX);
                 }
-                    Log.d("TAG", "onScroll: "+distanceX);
-                }
-                    //setTopMargin(_settings, 0); //向左滑（与滑动动画配合效果较好）
+                //setTopMargin(_settings, 0); //向左滑（与滑动动画配合效果较好）
                 return false;
             }
 
@@ -253,44 +313,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         return false;
     }
 
-    class counting extends Thread {
-        @Override
-        public void run() {
-            int bar_now = 1;
-            int noteTime_now = 1;
-            bv2.updateItemView(MainActivity.this, R.id.bars_now, bar_now+"");
-            bv2.updateItemView(MainActivity.this, R.id.noteTime_now, noteTime_now+"");
-            stop = false;
-            try {
-                sleep(1500);
-            } catch (InterruptedException ignored) {}
-            if(!stop) {
-                sp1.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
-                u.vL();
-            }
-            while(!stop){
-                try {
-                    Thread.sleep((long) NomeTimer.bpmToSecond(bpm));
-                } catch(InterruptedException ignored) {}
-                noteTime_now = noteTime_now + 1;
-                if(!stop && noteTime_now == noteTime+1){
-                    bar_now = bar_now +1;
-                    noteTime_now = 1;
-                    sp1.play(1,u.VOLUME(),u.VOLUME(),0,0,1);
-                    u.vL();
-                }else{
-                    if(!stop) {
-                        sp2.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
-                        u.vS();
-                    }
-                }
-                bv2.updateItemView(MainActivity.this, R.id.bars_now, bar_now+"");
-                bv2.updateItemView(MainActivity.this, R.id.noteTime_now, noteTime_now+"");
-            }
-        }
-    }
+    // handling clicks
 
-    public void onBpmSettingClick(View v){
+    public void onBpmSettingClick(View v) {
         bounceViewEffect(v);
         new Handler().postDelayed(() -> {
             ValueAnimator anim = ValueAnimator.ofFloat(0.2f, 1f);
@@ -304,7 +329,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         bv.showBottomView(false);
     }
 
-    public void onClosePopupClick(View v){
+    public void onClosePopupClick(View v) {
         bounceViewEffect(v);
         new Handler().postDelayed(() -> {
             ValueAnimator anim = ValueAnimator.ofFloat(1f, 0.2f);
@@ -318,19 +343,21 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         bv.dismissBottomView();
     }
 
-    public void addBpm(boolean is10x, View v){
-        if(is10x){
-          bpm = bpm+10;
-          u.setLS(bpm);
-          if(bpm>240){
-              bpm = 240;
-              u.setLS(240);
-              Snackbar.make(v, "已经最快啦~", Snackbar.LENGTH_SHORT).show();
-          }
-        }else{
+    // add/minus bpm
+
+    public void addBpm(boolean is10x, View v) {
+        if (is10x) {
+            bpm = bpm + 10;
+            u.setLS(bpm);
+            if (bpm > 240) {
+                bpm = 240;
+                u.setLS(240);
+                Snackbar.make(v, "已经最快啦~", Snackbar.LENGTH_SHORT).show();
+            }
+        } else {
             bpm++;
             u.setLS(bpm);
-            if(bpm > 240){
+            if (bpm > 240) {
                 bpm = 240;
                 u.setLS(240);
                 Snackbar.make(v, "已经最快啦~", Snackbar.LENGTH_SHORT).show();
@@ -339,19 +366,19 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         updateBpmSpeedView();
     }
 
-    public void minusBpm(boolean is10x, View v){
-        if(is10x){
-            bpm = bpm-10;
+    public void minusBpm(boolean is10x, View v) {
+        if (is10x) {
+            bpm = bpm - 10;
             u.setLS(bpm);
-            if(bpm < 10){
+            if (bpm < 10) {
                 bpm = 10;
                 u.setLS(10);
                 Snackbar.make(v, "已经最慢啦~", Snackbar.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             bpm--;
             u.setLS(bpm);
-            if(bpm < 10){
+            if (bpm < 10) {
                 bpm = 10;
                 u.setLS(10);
                 Snackbar.make(v, "已经最慢啦~", Snackbar.LENGTH_SHORT).show();
@@ -360,38 +387,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         updateBpmSpeedView();
     }
 
-    public void addBar(View v){
-            bar++;
-            u.setLB(bar);
-            if(bar>12){
-                bar = 12;
-                u.setLB(12);
-                Snackbar.make(v, "已经最大啦~", Snackbar.LENGTH_SHORT).show();
-            }
-        updateBarSpeedView();
-    }
+    // add/minus notetime
 
-    public void minusBar(View v){
-        bar--;
-        u.setLB(bar);
-        if(bar<1){
-            bar = 1;
-            u.setLB(bar);
-            Snackbar.make(v, "已经最小啦~", Snackbar.LENGTH_SHORT).show();
-        }
-        if(bar == 1){
-            u.setLB(1);
-            u.setLN(1);
-            noteTime = 1;
-            updateNoteTimeSpeedView();
-        }
-        updateBarSpeedView();
-    }
-
-    public void addNoteTime(View v){
+    public void addNoteTime(View v) {
         noteTime++;
         u.setLN(noteTime);
-        if(noteTime>12){
+        if (noteTime > 12) {
             u.setLN(12);
             noteTime = 12;
             Snackbar.make(v, "已经最大啦~", Snackbar.LENGTH_SHORT).show();
@@ -399,39 +400,35 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         updateNoteTimeSpeedView();
     }
 
-    public void minusNoteTime(View v){
+    public void minusNoteTime(View v) {
         noteTime--;
         u.setLN(noteTime);
-        if(noteTime<1){
+        if (noteTime < 1) {
             noteTime = 1;
             u.setLN(1);
             Snackbar.make(v, "已经最小啦~", Snackbar.LENGTH_SHORT).show();
         }
-        if(noteTime == 1){
-            bar = 1;
+        if (noteTime == 1) {
             u.setLN(1);
-            u.setLB(1);
-            updateBarSpeedView();
         }
         updateNoteTimeSpeedView();
     }
 
-    private void updateBpmSpeedView(){
-        bv.updateItemView(this, R.id.popup_bpm_label, bpm+"");
-        bpm_now.setText(bpm+"");
+    // syncing changed settings
+
+    private void updateBpmSpeedView() {
+        bv.updateItemView(this, R.id.popup_bpm_label, bpm + "");
+        bpm_now.setText(bpm + "");
     }
 
-    private void updateBarSpeedView(){
-        bv1.updateItemView(this, R.id.popup_bar_label, bar+"");
-        tv_bar.setText(bar+"");
+    private void updateNoteTimeSpeedView() {
+        bv1.updateItemView(this, R.id.popup_noteTime_label, noteTime + "");
+        tv_noteTime.setText(noteTime + "");
     }
 
-    private void updateNoteTimeSpeedView(){
-        bv1.updateItemView(this, R.id.popup_noteTime_label, noteTime+"");
-        tv_noteTime.setText(noteTime+"");
-    }
+    // bunch of visual effects here
 
-    private void bounceViewEffect(View v){
+    private void bounceViewEffect(View v) {
         runOnUiThread(() -> {
             ValueAnimator anim = ValueAnimator.ofFloat(1f, 0.85f);
             anim.setDuration(120);
@@ -468,7 +465,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         bv1.showBottomView(false);
     }
 
-    public void onClosePopupClick1(View v){
+    public void onClosePopupClick1(View v) {
         bounceViewEffect(v);
         new Handler().postDelayed(() -> {
             ValueAnimator anim = ValueAnimator.ofFloat(1f, 0.2f);
@@ -482,7 +479,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         bv1.dismissBottomView();
     }
 
-    public void onClosePopupClick2(View v){
+    public void onClosePopupClick2(View v) {
         bounceViewEffect(v);
         new Handler().postDelayed(() -> {
             ValueAnimator anim = ValueAnimator.ofFloat(1f, 0.2f);
@@ -497,6 +494,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         stop = true;
     }
 
+    public void onChangeSoundClick(View v){
+        switchSound();
+        loadSound();
+        switch_sound.setText("切换节拍声音: "+config.sounds[u.BEEP()][1]);
+    }
+
+    // animating a card's rIsE aNd FaLl
     public boolean onTouch(View view, MotionEvent event) {
         int lastY = 0;
         float _top = 0;
@@ -513,16 +517,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 int top = view.getTop() + dy - 10;
                 _top = top;
                 //获取到layoutParams然后改变属性，在设置回去
-                setTopMargin(_settings,top);
+                setTopMargin(_settings, top);
                 lastY = (int) event.getY();
                 //f*** integer
 
-                blur_layer.setAlpha(1-(_top/sheight));
+                blur_layer.setAlpha(1 - (_top / sheight));
                 break;
-            case MotionEvent.ACTION_UP:
+            case ACTION_UP:
                 float scrollPercent = 1 - blur_layer.getAlpha();
-                if(scrollPercent <=.3){
-                    float final_top = sheight-(blur_layer.getAlpha()*sheight);
+                if (scrollPercent <= .3) {
+                    float final_top = sheight - (blur_layer.getAlpha() * sheight);
                     new Handler().postDelayed(() -> {
                         ValueAnimator anim = ValueAnimator.ofFloat(blur_layer.getAlpha(), 1f);
                         anim.setDuration(100);
@@ -535,12 +539,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                         anim1.setDuration(100);
                         anim1.addUpdateListener(animation -> {
                             float currentValue = (float) animation.getAnimatedValue();
-                            setTopMargin(_settings, (int)currentValue);
+                            setTopMargin(_settings, (int) currentValue);
                         });
                         anim1.start();
                     }, 0);
-                }else{
-                    float final_top1 = sheight-(blur_layer.getAlpha()*sheight);
+                } else {
+                    float final_top1 = sheight - (blur_layer.getAlpha() * sheight);
                     float _sheight = sheight;
                     new Handler().postDelayed(() -> {
                         ValueAnimator anim = ValueAnimator.ofFloat(blur_layer.getAlpha(), 0f);
@@ -554,7 +558,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                         anim1.setDuration(150);
                         anim1.addUpdateListener(animation -> {
                             float currentValue = (float) animation.getAnimatedValue();
-                            setTopMargin(_settings, (int)currentValue);
+                            setTopMargin(_settings, (int) currentValue);
                         });
                         anim1.start();
                     }, 0);
@@ -570,8 +574,52 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public static void setTopMargin(View view, int topMargin) {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         layoutParams.setMargins(layoutParams.leftMargin, topMargin,
-                layoutParams.rightMargin,layoutParams.bottomMargin);
+                layoutParams.rightMargin, layoutParams.bottomMargin);
         view.setLayoutParams(layoutParams);
+    }
+
+    /**
+     * counting thread
+     */
+
+    class counting extends Thread {
+        @Override
+        public void run() {
+            int bar_now = 1;
+            int noteTime_now = 1;
+            bv2.updateItemView(MainActivity.this, R.id.bars_now, bar_now + "");
+            bv2.updateItemView(MainActivity.this, R.id.noteTime_now, noteTime_now + "");
+            stop = false;
+            try {
+                sleep(1500);
+            } catch (InterruptedException ignored) {
+            }
+            if (!stop) {
+                sp1.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
+                u.vL();
+            }
+            while (!stop) {
+                Log.d("notetime", "run: "+noteTime_now);
+                try {
+                    Thread.sleep((long) NomeTimer.bpmToSecond(bpm)); // wait until next beat
+                } catch (InterruptedException ignored) {
+                }
+                noteTime_now = noteTime_now + 1;
+                if (!stop && noteTime_now == noteTime + 1) {
+                    bar_now = bar_now + 1;
+                    noteTime_now = 1;
+                    sp1.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
+                    u.vL();
+                } else {
+                    if (!stop) {
+                        sp2.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
+                        u.vS();
+                    }
+                }
+                bv2.updateItemView(MainActivity.this, R.id.bars_now, bar_now + "");
+                bv2.updateItemView(MainActivity.this, R.id.noteTime_now, noteTime_now + "");
+            }
+        }
     }
 
 }

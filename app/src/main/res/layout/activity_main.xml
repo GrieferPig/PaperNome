@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
     android:backgroundTintMode="multiply"
     tools:context=".MainActivity">
 
@@ -96,8 +95,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/jiepaisetcard"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_width="141dp"
+            android:layout_height="41dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="3dp"
             android:layout_marginRight="10dp"
@@ -119,7 +118,8 @@
                     android:id="@+id/tv_noteTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="16dp"
+                    android:text="4"
                     android:textColor="#FF9800"
                     android:textSize="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -127,40 +127,15 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="35dp"
-                    android:textColor="#FF9800"
-                    android:textSize="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_noteTime"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="/"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_noteTime"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:alpha="0.85"
-                    android:text="小节拍数\n点击设置"
+                    android:text="拍每小节  点击设置"
                     android:textColor="#ffffff"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.8"
-                    app:layout_constraintStart_toEndOf="@+id/tv_bar"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -198,178 +173,194 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/settingconstraint"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:foregroundTint="#ffffff">
 
-                <ImageView
-                    android:id="@+id/dragger"
-                    android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:layout_marginTop="5dp"
-                    android:alpha="0.5"
-                    android:src="@mipmap/dragger"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView10"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
-                    android:text="设置"
-                    android:textColor="#2196F3"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
-                    android:alpha="0.85"
-                    android:text="调节音量"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.13999999" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    app:cardBackgroundColor="#2a2b2c"
-                    app:cardCornerRadius="6dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.38">
+                    android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/settingconstraint"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/imageView4"
-                            android:layout_width="26dp"
-                            android:layout_height="22dp"
-                            android:alpha="0.8"
-                            android:src="@mipmap/volume_low"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.02"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <SeekBar
-                            android:id="@+id/volume_seek"
-                            android:layout_width="114dp"
-                            android:layout_height="23dp"
-                            android:thumb="@drawable/seek_thumb"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.52"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="25dp"
-                            android:layout_height="27dp"
-                            android:alpha="0.8"
-                            android:src="@mipmap/volue_high"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.96"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    app:cardBackgroundColor="#2a2b2c"
-                    app:cardCornerRadius="6dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.75">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="132dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/textView10"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:text="震动打拍"
-                            android:textColor="@color/white"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="设置"
+                            android:textColor="#2196F3"
                             android:textSize="16sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.1"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="35dp"
-                            android:layout_marginBottom="16dp"
-                            android:alpha="0.85"
-                            android:text="每拍震动一次"
-                            android:textColor="@color/white"
-                            android:textSize="13sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.11"
+                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.45" />
+                            app:layout_constraintVertical_bias="0.0" />
 
-                        <Switch
-                            android:id="@+id/vib_beat"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="10dp"
+                            android:alpha="0.85"
+                            android:text="调节音量"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.13999999" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            app:cardBackgroundColor="#2a2b2c"
+                            app:cardCornerRadius="6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.45">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/imageView4"
+                                    android:layout_width="26dp"
+                                    android:layout_height="22dp"
+                                    android:alpha="0.8"
+                                    android:src="@mipmap/volume_low"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.02"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <SeekBar
+                                    android:id="@+id/volume_seek"
+                                    android:layout_width="114dp"
+                                    android:layout_height="23dp"
+                                    android:thumb="@drawable/seek_thumb"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.52"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/imageView3"
+                                    android:layout_width="25dp"
+                                    android:layout_height="27dp"
+                                    android:alpha="0.8"
+                                    android:src="@mipmap/volue_high"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.96"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            app:cardBackgroundColor="#2a2b2c"
+                            app:cardCornerRadius="6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="1.0">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:text="震动打拍"
+                                    android:textColor="@color/white"
+                                    android:textSize="16sp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.1"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="35dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:alpha="0.85"
+                                    android:text="每拍震动一次"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.11"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.45" />
+
+                                <Switch
+                                    android:id="@+id/vib_beat"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.cardview.widget.CardView>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.cardview.widget.CardView>
+                    <Button
+                        android:id="@+id/switch_sound"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#494949"
+                        android:onClick="onChangeSoundClick"
+                        android:text="切换节拍声音"
+                        android:textColor="@color/white" />
 
-                <TextView
-                    android:id="@+id/ver"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:alpha="0.85"
-                    android:singleLine="false"
-                    android:text="PLACEHOLDER"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textStyle="italic"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    <TextView
+                        android:id="@+id/ver"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:alpha="0.85"
+                        android:singleLine="false"
+                        android:text="PLACEHOLDER"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="italic" />
+                </LinearLayout>
+            </ScrollView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/dragger"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginTop="3dp"
+                android:alpha="0.5"
+                android:src="@mipmap/dragger" />
 
         </androidx.cardview.widget.CardView>
     </LinearLayout>
