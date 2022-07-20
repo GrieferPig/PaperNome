@@ -22,11 +22,11 @@ public class config {
 
     final public static int SOUND_HIT = 0;
     final public static int SOUND_SINE = 1;
-    final public static int SOUND_SNAP = 2;
+    final public static int SOUND_DEF = 2;
 
     public static String[][] sounds = new String[][]{
             {"hit", "木鱼声"},
             {"sine", "正弦波"},
-            {"snap", "响指"}
+            {"def", "老式节拍器"}
     };
 }

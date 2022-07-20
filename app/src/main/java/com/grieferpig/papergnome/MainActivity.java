@@ -5,9 +5,7 @@ import static android.view.MotionEvent.ACTION_UP;
 import androidx.cardview.widget.CardView;
 
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -24,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mmin18.widget.RealtimeBlurView;
 import com.google.android.material.snackbar.Snackbar;
@@ -94,14 +91,17 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         vib_beat.setChecked(u.VIBRATE());
         vib_beat.setOnCheckedChangeListener((buttonView, isChecked) -> u.setVIB(isChecked));
         ArrayList<String> _hidden_texts = new ArrayList<String>();
-        _hidden_texts.addAll(Arrays.asList("You found a nothing!",
+        _hidden_texts.addAll(Arrays.asList(
+                "You found a nothing!",
                 "Open-Source on Github!",
                 "Very Buggy!",
-                "Seriously who would like see this",
-                "LMFAO",
+                "Aww Izzy!",
                 "never gonna give you up",
                 "Friendship is Magic!",
-                "bruh", "Sub Me On YT/Bilibili!", "https://grieferpig.xyz!"));
+                "bRuH",
+                "Sub Me On bilibili!",
+                "https://grieferpig.xyz!",
+                "Make Your Mark!"));
         findViewById(R.id.ver).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -214,9 +214,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 u.setBEEP(config.SOUND_SINE);
                 break;
             case config.SOUND_SINE:
-                u.setBEEP(config.SOUND_SNAP);
+                u.setBEEP(config.SOUND_DEF);
                 break;
-            case config.SOUND_SNAP:
+            case config.SOUND_DEF:
                 u.setBEEP(config.SOUND_HIT);
                 break;
         }
@@ -234,9 +234,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 sp1.load(this, R.raw.sine_high, 1);
                 sp2.load(this, R.raw.sine_low, 2);
                 break;
-            case config.SOUND_SNAP:
-                sp1.load(this, R.raw.snap_high, 1);
-                sp2.load(this, R.raw.snap_low, 2);
+            case config.SOUND_DEF:
+                sp1.load(this, R.raw.def_high, 1);
+                sp2.load(this, R.raw.def_low, 2);
                 break;
         }
     }

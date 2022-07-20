@@ -37,7 +37,7 @@ public class util {
             setLN(4);
             setV(1);
             setVIB(true);
-            setBEEP(config.SOUND_HIT);
+            setBEEP(config.SOUND_DEF);
         }
     }
 
