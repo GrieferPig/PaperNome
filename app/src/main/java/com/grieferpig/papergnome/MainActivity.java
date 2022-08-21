@@ -128,6 +128,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                         String msg;
                         Log.d(TAG, "onTouch: "+fD);
                         if (fD.equals("07-16")) {
+                            // hardcoded love, will last forever
+                            // really
+                            //
+                            // she's just amazing
                             msg = "Happy Birthday!";
                         } else {
                             msg = _hidden_texts.get((int) (Math.random() * 10));
