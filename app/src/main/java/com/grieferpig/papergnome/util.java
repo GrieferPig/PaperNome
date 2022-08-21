@@ -35,6 +35,7 @@ public class util {
             _s.w(firstinstall_tag, "grieferpig.xyz");
             setLS(90);
             setLN(4);
+            setLB(4);
             setV(1);
             setVIB(true);
             setBEEP(config.SOUND_DEF);
@@ -61,6 +62,8 @@ public class util {
         return _s.ri(confItem.LAST_NOTETIME.name());
     }
 
+    public int LAST_BARTIME() {return _s.ri(confItem.LAST_BARTIME.name());}
+
     public int BEEP() {
         return _s.ri(confItem.BEEP_SOUND.name());
     }
@@ -73,10 +76,11 @@ public class util {
         _s.w(confItem.LAST_SPEED.name(), _t);
     }
 
-
     public void setLN(int _t) {
         _s.w(confItem.LAST_NOTETIME.name(), _t);
     }
+
+    public void setLB(int _t) {_s.w(confItem.LAST_BARTIME.name(), _t);}
 
     public void setVIB(boolean _t) {
         _s.w(confItem.VIBRATE.name(), _t);

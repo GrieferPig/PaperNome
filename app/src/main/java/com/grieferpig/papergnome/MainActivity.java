@@ -1,3 +1,7 @@
+// TODO: Refactor this shit
+// TODO: This is not refactor-able i gave up
+// TODO: What
+
 package com.grieferpig.papergnome;
 
 import static android.view.MotionEvent.ACTION_UP;
@@ -22,19 +26,26 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mmin18.widget.RealtimeBlurView;
 import com.google.android.material.snackbar.Snackbar;
+import com.shawnlin.numberpicker.NumberPicker;
 import com.tandong.bottomview.BottomView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
 
+    // DEBUGGGGGGGGGG
+    private final String TAG = "Info";
+
     RealtimeBlurView blur_layer;
     BottomView bv, bv1, bv2;
-    TextView bpm_now, tv_noteTime, about;
+    TextView bpm_now, tv_noteTime, tv_barTime, about;
     CardView bpmsetCard;
     Switch vib_beat;
     SeekBar volume_seek;
@@ -47,7 +58,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     boolean stop = false;
     int bpm;
-    int noteTime;
+    int noteTime, barTime;
 
     CardView _settings;
 
@@ -71,13 +82,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         super.onCreate(savedInstanceState);
         Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         u = new util(vibrator, this);
-        u.clear();
+        //u.clear();
         u.initConf();
         Display _display = u.getDisplay(this);
         sheight = _display.getHeight();
         swidth = _display.getWidth();
         bpm = u.LAST_SPEED();
         noteTime = u.LAST_NOTETIME();
+        barTime = u.LAST_BARTIME();
         setContentView(R.layout.activity_main);
         ViewGroup.LayoutParams constParams = findViewById(R.id.settingconstraint).getLayoutParams();
         constParams.height = sheight;
@@ -91,24 +103,36 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         vib_beat.setChecked(u.VIBRATE());
         vib_beat.setOnCheckedChangeListener((buttonView, isChecked) -> u.setVIB(isChecked));
         ArrayList<String> _hidden_texts = new ArrayList<String>();
+
         _hidden_texts.addAll(Arrays.asList(
-                "You found a nothing!",
-                "Open-Source on Github!",
+                "7355608!",
+                "OSed on Github!",
                 "Very Buggy!",
                 "Aww Izzy!",
-                "never gonna give you up",
+                "Never gonna give you up!",
                 "Friendship is Magic!",
-                "bRuH",
-                "Sub Me On bilibili!",
-                "https://grieferpig.xyz!",
-                "Make Your Mark!"));
+                "Based!",
+                "Me@bilibili!",
+                "grieferpig.xyz!",
+                "Try Pegasus Launcher!"));
         findViewById(R.id.ver).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == ACTION_UP) {
                     verTouchCounter = verTouchCounter + 1;
+                    Log.d(TAG, "onTouch: Touched grass");
                     if (verTouchCounter == 8) {
-                        Snackbar.make(findViewById(R.id.mainLayer), _hidden_texts.get((int) (Math.random() * 10)), Snackbar.LENGTH_SHORT).show();
+                        Date d = new Date(System.currentTimeMillis());
+                        SimpleDateFormat formatter= new SimpleDateFormat("MM-dd");
+                        String fD =formatter.format(d);
+                        String msg;
+                        Log.d(TAG, "onTouch: "+fD);
+                        if (fD.equals("07-16")) {
+                            msg = "Happy Birthday!";
+                        } else {
+                            msg = _hidden_texts.get((int) (Math.random() * 10));
+                        }
+                        Snackbar.make(findViewById(R.id.mainLayer), msg, Snackbar.LENGTH_SHORT).show();
                         verTouchCounter = 0;
                     }
                 }
@@ -137,7 +161,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         });
         about = findViewById(R.id.ver);
         about.setOnLongClickListener(v -> {
-            //u.clear();
+            u.clear();
+            Toast.makeText(MainActivity.this, "Settings Cleared.", Toast.LENGTH_SHORT).show();
             return true;
         });
         about.setText("节拍器 " + BuildConfig.VERSION_NAME + " ,Version " + BuildConfig.VERSION_CODE + ", " + BuildConfig.BUILD_TYPE + "\rBy GrieferPig");
@@ -146,10 +171,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         blur_layer = findViewById(R.id.blur_layer);
         bpm_now = findViewById(R.id.tv_bpm);
         tv_noteTime = findViewById(R.id.tv_noteTime);
+        tv_barTime = findViewById(R.id.tv_barTime);
         bpm_now.setText(bpm + "");
         switch_sound = findViewById(R.id.switch_sound);
-        switch_sound.setText("切换节拍声音: "+config.sounds[u.BEEP()][1]);
+        switch_sound.setText("切换节拍声音: " + config.sounds[u.BEEP()][1]);
         tv_noteTime.setText(noteTime + "");
+        tv_barTime.setText(barTime+"");
         bpmsetCard = findViewById(R.id.bpmsetCard);
         bpmsetCard.setOnLongClickListener(v -> {
             bounceViewEffect(v);
@@ -190,14 +217,47 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         });
 
         bv1 = new BottomView(this, R.style.BottomViewTheme_Transparent, R.layout.layout);
-        bv1.onItemClick(R.id.popup_noteTime_add, v -> {
-            addNoteTime(v);
-            bounceViewEffect(v);
+        View bv1View = bv1.getView();
+        NumberPicker noteTimePicker = (NumberPicker) bv1View.findViewById(R.id.noteTime_picker);
+        NumberPicker barTimePicker = (NumberPicker) bv1View.findViewById(R.id.barTime_picker);
+        // NumberPicker mareTimeBayPickle = findRandomPonyByName(R.name.Sprout);
+
+        noteTimePicker.setValue(noteTime);
+
+        noteTimePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                Log.d(TAG, String.format("NOTETIME: oldVal: %d, newVal: %d", oldVal, newVal));
+                setNoteTime(newVal);
+            }
         });
-        bv1.onItemClick(R.id.popup_noteTime_minus, v -> {
-            minusNoteTime(v);
-            bounceViewEffect(v);
+
+        barTimePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                Log.d(TAG, java.lang.Math.pow(2, newVal) + " " + newVal);
+                setBarTime((int) java.lang.Math.pow(2, newVal));
+            }
         });
+
+        String[] data = {"2", "4", "8"};
+        barTimePicker.setMinValue(1);
+        barTimePicker.setMaxValue(data.length);
+        barTimePicker.setDisplayedValues(data);
+        switch(barTime){
+            case 2:
+                barTimePicker.setValue(1);
+                break;
+
+            case 4:
+                barTimePicker.setValue(2);
+                break;
+
+            case 8:
+                barTimePicker.setValue(3);
+                break;
+        }
+
 
         bv2 = new BottomView(this, R.style.BottomViewTheme_Transparent, R.layout.popup_count);
         updateBpmSpeedView();
@@ -387,31 +447,18 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         updateBpmSpeedView();
     }
 
-    // add/minus notetime
+    // set notetime
 
-    public void addNoteTime(View v) {
-        noteTime++;
-        u.setLN(noteTime);
-        if (noteTime > 12) {
-            u.setLN(12);
-            noteTime = 12;
-            Snackbar.make(v, "已经最大啦~", Snackbar.LENGTH_SHORT).show();
-        }
+    public void setNoteTime(int time) {
+        this.noteTime = time;
+        u.setLN(time);
         updateNoteTimeSpeedView();
     }
 
-    public void minusNoteTime(View v) {
-        noteTime--;
-        u.setLN(noteTime);
-        if (noteTime < 1) {
-            noteTime = 1;
-            u.setLN(1);
-            Snackbar.make(v, "已经最小啦~", Snackbar.LENGTH_SHORT).show();
-        }
-        if (noteTime == 1) {
-            u.setLN(1);
-        }
-        updateNoteTimeSpeedView();
+    public void setBarTime(int time) {
+        this.barTime = time;
+        u.setLB(time);
+        updateBarTimeSpeedView();
     }
 
     // syncing changed settings
@@ -422,8 +469,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     private void updateNoteTimeSpeedView() {
-        bv1.updateItemView(this, R.id.popup_noteTime_label, noteTime + "");
         tv_noteTime.setText(noteTime + "");
+    }
+
+    private void updateBarTimeSpeedView() {
+        tv_barTime.setText(barTime + "");
     }
 
     // bunch of visual effects here
@@ -451,7 +501,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         });
     }
 
-    public void onBarTimeChangeClick(View v){
+    public void onBarTimeChangeClick(View v) {
         bounceViewEffect(v);
         new Handler().postDelayed(() -> {
             ValueAnimator anim = ValueAnimator.ofFloat(0.2f, 1f);
@@ -494,10 +544,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         stop = true;
     }
 
-    public void onChangeSoundClick(View v){
+    public void onChangeSoundClick(View v) {
         switchSound();
         loadSound();
-        switch_sound.setText("切换节拍声音: "+config.sounds[u.BEEP()][1]);
+        switch_sound.setText("切换节拍声音: " + config.sounds[u.BEEP()][1]);
     }
 
     // animating a card's rIsE aNd FaLl
@@ -590,18 +640,18 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             bv2.updateItemView(MainActivity.this, R.id.bars_now, bar_now + "");
             bv2.updateItemView(MainActivity.this, R.id.noteTime_now, noteTime_now + "");
             stop = false;
-            try {
-                sleep(1500);
-            } catch (InterruptedException ignored) {
-            }
+//            try {
+//                sleep(100);
+//            } catch (InterruptedException ignored) {
+//            }
             if (!stop) {
                 sp1.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
                 u.vL();
             }
             while (!stop) {
-                Log.d("notetime", "run: "+noteTime_now);
+                Log.d("notetime", "run: " + noteTime_now);
                 try {
-                    Thread.sleep((long) NomeTimer.bpmToSecond(bpm)); // wait until next beat
+                    Thread.sleep((long) NomeTimer.bpmToSecond(bpm, barTime)); // wait until next beat
                 } catch (InterruptedException ignored) {
                 }
                 noteTime_now = noteTime_now + 1;
@@ -613,7 +663,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 } else {
                     if (!stop) {
                         sp2.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
-                        u.vS();
+                        //u.vS();
                     }
                 }
                 bv2.updateItemView(MainActivity.this, R.id.bars_now, bar_now + "");

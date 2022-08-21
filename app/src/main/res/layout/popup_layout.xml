@@ -12,7 +12,7 @@
         android:layout_height="130dp"
         android:visibility="visible"
         app:cardBackgroundColor="#2a2b2c"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="0dp"
         app:cardElevation="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

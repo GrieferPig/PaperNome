@@ -4,7 +4,6 @@ plugins {
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "30.0.1"
 
     defaultConfig {
         applicationId 'com.grieferpig.papernome'
@@ -27,18 +26,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
 
-        lintOptions {
-            checkReleaseBuilds false
-            // Or, if you prefer, you can continue to check for errors in release builds,
-            // but continue the build even when errors are found:
-            abortOnError false
-        }
 
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -47,4 +43,5 @@ dependencies {
     implementation 'com.github.mmin18:realtimeblurview:1.2.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'io.github.ShawnLin013:number-picker:2.4.13'
 }
