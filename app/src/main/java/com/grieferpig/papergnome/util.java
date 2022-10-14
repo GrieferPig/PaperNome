@@ -1,19 +1,22 @@
 package com.grieferpig.papergnome;
 
 import android.app.Activity;
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
 public class util {
     final String firstinstall_tag = "WOW_YOU_FOUND_A_NOTHING";
     Vibrator v;
-    Activity a;
     StorageManager _s;
+    Context helper;
 
-    public util(Vibrator v, Activity a) {
+    public util(Vibrator v, Context a) {
         this.v = v;
-        this.a = a;
+        this.helper = a;
         initConf();
     }
 
@@ -30,13 +33,13 @@ public class util {
     }
 
     public void initConf() {
-        _s = new StorageManager(a);
+        _s = new StorageManager((Activity) this.helper);
         if (_s.r(firstinstall_tag).equals("")) {
             _s.w(firstinstall_tag, "grieferpig.xyz");
             setLS(90);
             setLN(4);
             setLB(4);
-            setV(1);
+            //setV(1);
             setVIB(true);
             setBEEP(config.SOUND_DEF);
         }
@@ -46,8 +49,10 @@ public class util {
         _s.w(firstinstall_tag, "");
     }
 
-    public float VOLUME() {
-        return _s.rf(confItem.VOLUME.name());
+    public int VOLUME() {
+//        return _s.rf(confItem.VOLUME.name());
+        return ((AudioManager)this.helper.getSystemService(Context.AUDIO_SERVICE))
+                .getStreamVolume(AudioManager.STREAM_MUSIC);
     }
 
     public boolean VIBRATE() {
@@ -68,8 +73,17 @@ public class util {
         return _s.ri(confItem.BEEP_SOUND.name());
     }
 
-    public void setV(float _t) {
-        _s.w(confItem.VOLUME.name(), _t);
+    public void setV(int _t) {
+//        _s.w(confItem.VOLUME.name(), _t);
+        AudioManager mAudioManager = (AudioManager) this.helper.getSystemService(Context.AUDIO_SERVICE);
+//        int _max_vol = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        //Log.d("TAG", "setV: "+(int)(_t*100));
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,_t, 0);
+        //Log.d("TTTAG", mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC)+"/"+mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+    }
+    public int getMaxVolume(){
+        return ((AudioManager)this.helper.getSystemService(Context.AUDIO_SERVICE))
+                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
     }
 
     public void setLS(int _t) {

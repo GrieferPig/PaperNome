@@ -1,11 +1,12 @@
 package com.grieferpig.papergnome;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 public class StorageManager {
 
-    private Activity _operator;
+    private Context _operator;
     private String key;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -16,7 +17,7 @@ public class StorageManager {
         pref = _operator.getSharedPreferences(key, _operator.MODE_PRIVATE);
     }
 
-    public StorageManager(Activity _operator, String key){
+    public StorageManager(Context _operator, String key){
         this._operator = _operator;
         this.key = key;
         pref = _operator.getSharedPreferences(key, _operator.MODE_PRIVATE);

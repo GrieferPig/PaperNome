@@ -82,8 +82,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         super.onCreate(savedInstanceState);
         Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         u = new util(vibrator, this);
-        //u.clear();
-        u.initConf();
+        // u.clear();
+        // u.initConf(this);
         Display _display = u.getDisplay(this);
         sheight = _display.getHeight();
         swidth = _display.getWidth();
@@ -128,10 +128,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                         String msg;
                         Log.d(TAG, "onTouch: "+fD);
                         if (fD.equals("07-16")) {
-                            // hardcoded love, will last forever
+                            // hardcoded love, immutable during lifetime
                             // really
                             //
-                            // she's just amazing
+                            // she's amazing
                             msg = "Happy Birthday!";
                         } else {
                             msg = _hidden_texts.get((int) (Math.random() * 10));
@@ -144,13 +144,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             }
         });
         volume_seek = findViewById(R.id.volume_seek);
-        volume_seek.setMax(100);
-        volume_seek.setProgress((int) (u.VOLUME() * 100), true);
+        volume_seek.setMax(u.getMaxVolume());
+        volume_seek.setProgress(u.VOLUME(), true);
         volume_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float _p = (float) progress;
-                u.setV(_p / 100);
+                u.setV(progress);
             }
 
             @Override
@@ -224,7 +223,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         View bv1View = bv1.getView();
         NumberPicker noteTimePicker = (NumberPicker) bv1View.findViewById(R.id.noteTime_picker);
         NumberPicker barTimePicker = (NumberPicker) bv1View.findViewById(R.id.barTime_picker);
-        // NumberPicker mareTimeBayPickle = findRandomPonyByName(R.name.Sprout);
+        // NumberPicker mareTimeBayPickle = findPonyByName(R.name.Sprout);
 
         noteTimePicker.setValue(noteTime);
 
@@ -649,7 +648,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 //            } catch (InterruptedException ignored) {
 //            }
             if (!stop) {
-                sp1.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
+                sp1.play(1, 1, 1, 0, 0, 1);
                 u.vL();
             }
             while (!stop) {
@@ -662,11 +661,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 if (!stop && noteTime_now == noteTime + 1) {
                     bar_now = bar_now + 1;
                     noteTime_now = 1;
-                    sp1.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
+                    sp1.play(1, 1, 1, 0, 0, 1);
                     u.vL();
                 } else {
                     if (!stop) {
-                        sp2.play(1, u.VOLUME(), u.VOLUME(), 0, 0, 1);
+                        sp2.play(1, 1, 1, 0, 0, 1);
                         //u.vS();
                     }
                 }
