@@ -50,14 +50,14 @@
             <com.shawnlin.numberpicker.NumberPicker
                 android:id="@+id/barTime_picker"
                 android:layout_width="50dp"
-                android:layout_height="75dp"
+                android:layout_height="70dp"
                 android:layout_centerInParent="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.876"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.709"
+                app:layout_constraintVertical_bias="0.55"
                 app:np_dividerColor="#00000000"
                 app:np_height="180dp"
                 app:np_max="16"
@@ -72,14 +72,14 @@
             <com.shawnlin.numberpicker.NumberPicker
                 android:id="@+id/noteTime_picker"
                 android:layout_width="50dp"
-                android:layout_height="75dp"
+                android:layout_height="70dp"
                 android:layout_centerInParent="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.123"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.709"
+                app:layout_constraintVertical_bias="0.55"
                 app:np_dividerColor="#00000000"
                 app:np_height="180dp"
                 app:np_max="16"
@@ -94,6 +94,7 @@
             </com.shawnlin.numberpicker.NumberPicker>
 
             <TextView
+                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="/"
@@ -103,7 +104,31 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.63" />
+                app:layout_constraintVertical_bias="0.52" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="几分音符为一拍"
+                android:textColor="#D8FFFFFF"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="每小节有几拍"
+                android:textColor="#D8FFFFFF"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

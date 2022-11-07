@@ -3,14 +3,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdk 29
 
     defaultConfig {
         applicationId 'com.grieferpig.papernome'
         minSdkVersion 25
-        targetSdkVersion 29
-        versionCode 19
-        versionName '1.0.0.'
+        targetSdk 29
+        versionCode 20
+        versionName '1.0.1'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

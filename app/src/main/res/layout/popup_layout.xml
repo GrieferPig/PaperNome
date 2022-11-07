@@ -39,17 +39,17 @@
                 android:id="@+id/popup_bpm_add"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
-                android:layout_marginTop="62dp"
-                android:layout_marginEnd="120dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="60dp"
                 android:src="@mipmap/icon_minus"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/popup_bpm_minus"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
-                android:layout_marginTop="62dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginEnd="8dp"
                 android:src="@mipmap/icon_add"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -73,6 +73,8 @@
                 android:id="@+id/popup_bpm_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-1dp"
+                android:layout_marginBottom="2dp"
                 android:text="
 "
                 android:textAlignment="center"
@@ -87,18 +89,31 @@
                 app:layout_constraintVertical_bias="0.64" />
 
             <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.85"
                 android:text="BPM"
                 android:textColor="#FF9800"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/popup_bpm_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toEndOf="@+id/popup_bpm_label"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.69" />
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BPM=每分钟节拍数"
+                android:textColor="#D9FFFFFF"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.92" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

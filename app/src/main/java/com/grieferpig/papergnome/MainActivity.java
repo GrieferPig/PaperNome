@@ -105,15 +105,15 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ArrayList<String> _hidden_texts = new ArrayList<String>();
 
         _hidden_texts.addAll(Arrays.asList(
-                "7355608!",
-                "OSed on Github!",
+                "You found a nothing!",
+                "Me@Github!",
                 "Very Buggy!",
-                "Aww Izzy!",
+                "Izzy moOOonbow!",
                 "Never gonna give you up!",
                 "Friendship is Magic!",
                 "Based!",
-                "Me@bilibili!",
-                "grieferpig.xyz!",
+                "Me@Bilibili!",
+                "Try YeetOS!",
                 "Try Pegasus Launcher!"));
         findViewById(R.id.ver).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -168,8 +168,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             Toast.makeText(MainActivity.this, "Settings Cleared.", Toast.LENGTH_SHORT).show();
             return true;
         });
-        about.setText("节拍器 " + BuildConfig.VERSION_NAME + " ,Version " + BuildConfig.VERSION_CODE + ", " + BuildConfig.BUILD_TYPE + "\rBy GrieferPig");
-        about.setTextSize((float) 8.0);
+        about.setText("节拍器 " + BuildConfig.VERSION_NAME + ", 版本 " + BuildConfig.VERSION_CODE + ", " + BuildConfig.BUILD_TYPE + "\rBy GrieferPig");
+        about.setTextSize((float) 10.0);
         loadSound();
         blur_layer = findViewById(R.id.blur_layer);
         bpm_now = findViewById(R.id.tv_bpm);
