@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">节拍器</string>
+    <string name="about">节拍器 %s, 版本 %d, %s\\rBy GrieferPig</string>
+    <string name="wooden_fish">木鱼</string>
+    <string name="sine">正弦波</string>
+    <string name="trad_metronome">老式节拍器</string>
+    <string name="set_time_sig">设置拍号</string>
+    <string name="beep_sound">节拍声音</string>
+    <string name="ph_beep_sound">老式节拍器</string>
+</resources>

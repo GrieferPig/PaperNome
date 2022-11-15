@@ -1,3 +1,15 @@
+// Hey adventurer, yes you, guess you found this app's code on github haha well done gj
+// As an award, I've hid a easter egg in this app which nobody knows except me (now including you but probably someone who is faster than you have already revealed the secrets lol ).
+// This easter egg is packed into the final app you downloaded on the app market, so if you found it, you can show off to your friends and claim you "hacked" your watch (not exactly but it looks cool anyway)
+// I'll give you a hint: *whisper* it's definitely not inside config.java. Don't even think about opening that file.
+// If you found it please email me @ grieferpig@163.com about your finding and your nickname. First one who answers the 3 questions below will get his/her name listed in the app.
+// - How do you found this code
+// - What is the easter egg (what does it do, how to activate it, etc)
+// - Where does this easter egg located in the code
+// - IMPORTANT: What event does this easter egg tribute for
+// - Don't forget to add your nickname (not your real name) so I can add your name to the app.
+// Now go start your scavenger hunt and claim your prize! First to the key, first to the egg!
+
 // TODO: Refactor this shit
 // TODO: This is not refactor-able i gave up
 // TODO: What
@@ -19,11 +31,11 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.shawnlin.numberpicker.NumberPicker;
 
 import java.text.SimpleDateFormat;
@@ -31,12 +43,10 @@ import java.util.Date;
 
 public class MainActivity extends Activity {
 
-    // DEBUGGGGGGGGGG
+    // DEBUG
     private final String TAG = "Info";
 
-    TextView bpm_now, tv_noteTime, tv_barTime, about;
-    Switch vib_beat;
-    SeekBar volume_seek;
+    SeekBar volumeSeeker;
 
     boolean stop = false;
     int bpm;
@@ -54,42 +64,19 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         u = new util(vibrator, this);
+
         bpm = u.LAST_SPEED();
         BeatDuration = u.LAST_BEATDURATION();
         BeatAmount = u.LAST_BEATAMOUNT();
 
-        volume_seek = findViewById(R.id.volume_seek);
-        volume_seek.setMax(u.getMaxVolume());
-        volume_seek.setProgress(u.VOLUME(), true);
-        volume_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                u.setV(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        about = findViewById(R.id.ver);
-        about.setOnLongClickListener(v -> {
-            u.clear();
-            return true;
-        });
-        about.setText("节拍器 " + BuildConfig.VERSION_NAME + ", 版本 " + BuildConfig.VERSION_CODE + ", " + BuildConfig.BUILD_TYPE + "\rBy GrieferPig");
-        about.setTextSize((float) 10.0);
         loadSound();
-
     }
 
-    public void initTimeSigSelector(NumberPicker BeatAmountPicker, NumberPicker BeatDurationPicker) {
+    public void test(View v){
+        Log.d(TAG, "Wtf");
+    }
+
+    void initTimeSigSelector(NumberPicker BeatAmountPicker, NumberPicker BeatDurationPicker) {
         // NumberPicker mareTimeBayPickle = findPonyByName(R.name.Sprout);
 
         BeatAmountPicker.setValue(BeatAmount);
@@ -117,6 +104,38 @@ public class MainActivity extends Activity {
         }
     }
 
+    void initAboutTextView(@IdRes int aboutId){
+        TextView about = findViewById(aboutId);
+        about.setOnLongClickListener(v -> {
+            u.clear();
+            return true;
+        });
+        about.setText(
+                getString(R.string.about, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, BuildConfig.BUILD_TYPE)
+        );
+    }
+
+    void initVolumeSeeker(@IdRes int volumeSeekerId){
+        volumeSeeker = findViewById(volumeSeekerId);
+        volumeSeeker.setMax(u.getMaxVolume());
+        volumeSeeker.setProgress(u.VOLUME(), true);
+        volumeSeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                u.setV(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
 
     private void switchSound() {
         switch (u.BEEP()) {
@@ -132,6 +151,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void loadSound() {
         sp1 = new SoundPool(3, AudioManager.STREAM_MUSIC, 1);
         sp2 = new SoundPool(3, AudioManager.STREAM_MUSIC, 1);
@@ -149,35 +169,6 @@ public class MainActivity extends Activity {
                 sp2.load(this, R.raw.def_low, 2);
                 break;
         }
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    void SetSneaksyMsg(@IdRes int sneaksyId) {
-        findViewById(sneaksyId).setOnTouchListener((v, event) -> {
-            if (event.getAction() == ACTION_UP) {
-                verTouchCounter = verTouchCounter + 1;
-                if (verTouchCounter == 8) {
-                    Date d = new Date(System.currentTimeMillis());
-                    @SuppressLint("SimpleDateFormat")
-                    SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");
-                    String fD = formatter.format(d);
-                    String msg;
-                    Log.d(TAG, "onTouch: " + fD);
-                    if (fD.equals("07-16")) {
-                        // hardcoded love, immutable during lifetime
-                        // really
-                        //
-                        // she's amazing
-                        msg = "Happy Birthday!";
-                    } else {
-                        msg = sneaksy.get((int) (Math.random() * 10));
-                    }
-                    Snackbar.make(findViewById(R.id.mainLayer), msg, Snackbar.LENGTH_SHORT).show();
-                    verTouchCounter = 0;
-                }
-            }
-            return false;
-        });
     }
 
     public void addBpm(boolean is10x, View v) {
@@ -211,15 +202,51 @@ public class MainActivity extends Activity {
     }
 
     public void setBeatDuration(int time) {
-        this.noteTime = time;
+        this.BeatDuration = time;
         u.setLN(time);
     }
 
     // set time signature
 
     public void setBeatAmount(int time) {
-        this.barTime = time;
+        this.BeatAmount = time;
         u.setLB(time);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    void SetSneaksyMsg(@IdRes int sneaksyId) {
+        // Sneaksy Message? Nah totally not suspicious, right?
+        View imNotFlanksy = findViewById(sneaksyId);
+        imNotFlanksy.setOnTouchListener((v, event) -> {
+            if (event.getAction() == ACTION_UP) {
+                // Ooh a counter! I loves counters. They always make things worse just like Discord. Cool huh?
+                verTouchCounter = verTouchCounter + 1;
+                if (verTouchCounter == 8) {
+                    Date d = new Date(System.currentTimeMillis());
+                    @SuppressLint("SimpleDateFormat")
+                    SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");
+                    String fD = formatter.format(d);
+                    String msg;
+                    Log.d(TAG, "onTouch: " + fD);
+                    if (fD.equals("07-16")) {
+                        // hardcoded love, immutable during lifetime
+                        // really
+                        //
+                        // she's amazing
+
+                        // NVM it's me thinking 'bout my gf again but this comment is not the easter egg.
+                        // seriously
+                        // Hint: the easter egg is touchable
+                        msg = "Happy Birthday!";
+                    } else {
+                        msg = sneaksy.get((int) (Math.random() * 10));
+                    }
+                    Snackbar.make(imNotFlanksy, msg, Snackbar.LENGTH_SHORT).show();
+                    verTouchCounter = 0;
+                }
+            }
+            return false;
+        });
     }
 
     class counting extends Thread {
@@ -232,11 +259,12 @@ public class MainActivity extends Activity {
             u.vL();
             while (!stop) {
                 try {
-                    Thread.sleep((long) NomeTimer.bpmToSecond(bpm, barTime)); // wait until next beat
+                    //noinspection BusyWait
+                    Thread.sleep((long) NomeTimer.bpmToSecond(bpm, BeatDuration)); // wait until next beat
                 } catch (InterruptedException ignored) {
                 }
                 BeatNow = BeatNow + 1;
-                if (!stop && BeatNow == noteTime + 1) {
+                if (!stop && BeatNow == BeatAmount + 1) {
                     BarNow = BarNow + 1;
                     BeatNow = 1;
                     sp1.play(1, 1, 1, 0, 0, 1);

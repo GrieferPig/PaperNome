@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name" translatable="false">节拍器</string>
+    <string name="app_name">Metronome</string>
+    <string name="about">Metronome %s, Version %d, %s\\rBy GrieferPig</string>
+    <string name="wooden_fish">Wooden Fish</string>
+    <string name="sine">Sine Wave</string>
+    <string name="trad_metronome">Trad. Metronome</string>
+    <string name="cd_minus_bpm" translatable="false">Decrease BPM</string>
+    <string name="cd_add_bpm" translatable="false">Increase BPM</string>
+    <string name="ph_bpm" translatable="false">90</string>
+    <string name="bpm" translatable="false">BPM</string>
+    <string name="set_time_sig">Time Sig.</string>
+    <string name="ph_time_sig" translatable="false">4/4</string>
+    <string name="beep_sound">Beep Sound</string>
+    <string name="ph_beep_sound">Trad. Metronome</string>
 </resources>
