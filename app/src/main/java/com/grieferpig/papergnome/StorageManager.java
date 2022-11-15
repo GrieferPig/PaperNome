@@ -6,21 +6,21 @@ import android.content.SharedPreferences;
 
 public class StorageManager {
 
-    private Context _operator;
+    private final Context _operator;
     private String key;
-    private SharedPreferences pref;
+    private final SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
     public StorageManager(Activity _operator){
         this._operator = _operator;
         this.key = config.settingStoragePath;
-        pref = _operator.getSharedPreferences(key, _operator.MODE_PRIVATE);
+        pref = _operator.getSharedPreferences(key, Context.MODE_PRIVATE);
     }
 
     public StorageManager(Context _operator, String key){
         this._operator = _operator;
         this.key = key;
-        pref = _operator.getSharedPreferences(key, _operator.MODE_PRIVATE);
+        pref = _operator.getSharedPreferences(key, Context.MODE_PRIVATE);
     }
 
     public StorageManager setKey(String key) {

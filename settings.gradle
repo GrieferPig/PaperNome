@@ -1,3 +1,2 @@
-include ':bottomview'
 include ':app'
 rootProject.name = "PaperGnome"
