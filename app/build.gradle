@@ -3,22 +3,22 @@ plugins {
 }
 
 android {
-    compileSdk 29
+    namespace 'com.grieferpig.papernome'
+    compileSdk 33
 
     defaultConfig {
-        applicationId 'com.grieferpig.papernome'
-        minSdkVersion 25
-        targetSdk 29
-        versionCode 20
-        versionName '1.0.1'
+        applicationId "com.grieferpig.papernome"
+        minSdk 25
+        targetSdk 33
+        versionCode 28
+        versionName '1.1.4'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -26,22 +26,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    lint {
-        abortOnError false
-        checkReleaseBuilds false
+    dependenciesInfo {
+        includeInApk true
+        includeInBundle true
     }
-
-
+    buildToolsVersion '30.0.3'
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation project(path: ':bottomview')
-    testImplementation 'junit:junit:4.+'
-    implementation 'com.github.mmin18:realtimeblurview:1.2.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'io.github.ShawnLin013:number-picker:2.4.13'
 }

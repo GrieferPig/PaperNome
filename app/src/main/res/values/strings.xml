@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name" translatable="false">节拍器</string>
+    <string name="about" formatted="false">Metronome %s, Version %d, %s\\rBy GrieferPig</string>
+    <string name="app_name">Metronome</string>
+    <string name="beep_sound">Beep Sound</string>
+    <string name="bpm" translatable="false">BPM</string>
+    <string name="cd_add_bpm" translatable="false">Increase BPM</string>
+    <string name="cd_minus_bpm" translatable="false">Decrease BPM</string>
+    <string name="ph_beep_sound">Trad. Metronome</string>
+    <string name="ph_bpm" translatable="false">90</string>
+    <string name="ph_time_sig" translatable="false">4/4</string>
+    <string name="set_time_sig">Time Sig.</string>
+    <string name="sine">Sine Wave</string>
+    <string name="trad_metronome">Trad. Metronome</string>
+    <string name="wooden_fish">Wooden Fish</string>
+    <string name="playin">Playing</string>
+    <string name="start">Start</string>
+    <string name="sb_slowest">Min tempo reached</string>
+    <string name="sb_fastest">Max tempo reached</string>
+    <string name="ph_playin_bar_n_beat" translatable="false">1</string>
+    <string name="click_x_to_stop">Click X to stop</string>
+    <string name="time_sig">Time Signature</string>
+    <string name="divider" translatable="false">/</string>
+    <string name="ok">OK</string>
 </resources>
